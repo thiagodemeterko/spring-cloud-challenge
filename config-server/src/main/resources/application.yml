@@ -9,5 +9,6 @@ spring:
   cloud:
     config:
       server:
-        native:
-          search-locations: c:/config-server-repo
+        git:
+          uri: https://github.com/thiagodemeterko/spring-cloud-challenge-config-repo
+          search-paths: distancia,monolito,pagamento
