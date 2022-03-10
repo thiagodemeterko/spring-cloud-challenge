@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 class PedidoController {
+
+	private static final Logger LOG = LoggerFactory.getLogger(PedidoController.class);
 
 	private PedidoRepository repo;
 
@@ -49,7 +53,9 @@ class PedidoController {
 	PedidoDto atualizaStatus(@PathVariable Long pedidoId, @RequestBody Pedido pedidoParaAtualizar) {
 		Pedido pedido = repo.porIdComItens(pedidoId).orElseThrow(ResourceNotFoundException::new);
 		pedido.setStatus(pedidoParaAtualizar.getStatus());
+		LOG.info("Atualizando status do pedido {}", pedido.getId());
 		repo.atualizaStatus(pedido.getStatus(), pedido);
+		LOG.info("Atualizado o status do pedido {} para {}", pedido.getId(), pedido.getStatus());
 		return new PedidoDto(pedido);
 	}
 
